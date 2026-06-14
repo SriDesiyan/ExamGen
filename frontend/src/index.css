@@ -688,3 +688,48 @@ select.nexus-input {
   background: var(--text-primary);
   color: #fff;
 }
+
+/* ─── Premium Redesign Elements ───────────────────────────────────────── */
+.stat-ring {
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  animation: stat-ring-fill 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes stat-ring-fill {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle, var(--gold-50) 0%, transparent 70%);
+}
+
+.brand-mark::before {
+  content: '';
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  border: 1px dashed var(--border-gold);
+  border-radius: 50%;
+  opacity: 0.25;
+  animation: spin-slow 20s linear infinite;
+}
+
+.achievement-seal {
+  background: radial-gradient(circle, var(--gold-50) 0%, var(--gold-100) 100%);
+  border: 1.5px solid var(--border-gold);
+  box-shadow: 0 0 0 4px rgba(232, 184, 36, 0.08), var(--shadow-sm);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}

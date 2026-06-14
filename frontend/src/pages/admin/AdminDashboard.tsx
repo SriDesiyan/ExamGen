@@ -13,10 +13,10 @@ export default function AdminDashboard() {
   }, []);
 
   const stats = [
-    { label: 'Total Exams', value: overview.totalExams || 0, icon: BookOpen, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-    { label: 'Total Students', value: overview.totalStudents || 0, icon: Users, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-    { label: 'Total Submissions', value: overview.totalSubmissions || 0, icon: TrendingUp, color: 'text-green-400', bg: 'bg-green-500/10' },
-    { label: 'Platform Avg Score', value: `${overview.avgScore || 0}%`, icon: Shield, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
+    { label: 'Total Exams', value: overview.totalExams || 0, icon: BookOpen, color: 'text-amber-700', bg: 'bg-amber-500/10 border border-amber-500/20' },
+    { label: 'Total Students', value: overview.totalStudents || 0, icon: Users, color: 'text-blue-700', bg: 'bg-blue-500/10 border border-blue-500/20' },
+    { label: 'Total Submissions', value: overview.totalSubmissions || 0, icon: TrendingUp, color: 'text-green-700', bg: 'bg-green-500/10 border border-green-500/20' },
+    { label: 'Platform Avg Score', value: `${overview.avgScore || 0}%`, icon: Shield, color: 'text-purple-700', bg: 'bg-purple-500/10 border border-purple-500/20' },
   ];
 
   return (

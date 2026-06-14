@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Brain, Zap, BarChart3, Lock, Eye, ChevronRight, Star, Users, CheckCircle, ArrowRight, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
+import { Shield, Brain, Zap, BarChart3, Lock, Eye, ChevronRight, Star, Users, CheckCircle, ArrowRight, BookOpen, TrendingUp } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const features = [
@@ -109,14 +109,18 @@ export default function LandingPage() {
 
           {/* Badge pill */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-sm font-medium"
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-8 text-sm font-medium"
               style={{
                 background: 'linear-gradient(135deg, #fffbeb, #fef3c7)',
                 border: '1px solid rgba(201,154,14,0.4)',
                 color: 'var(--gold-700)',
                 boxShadow: '0 2px 12px rgba(232,184,36,0.15)'
               }}>
-              <Sparkles size={14} style={{ color: 'var(--gold-600)' }} />
+              {/* Custom geometric brand mark — thin diamond ring */}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                <polygon points="7,1 13,7 7,13 1,7" stroke="currentColor" strokeWidth="1.4" fill="none" />
+                <polygon points="7,3.5 10.5,7 7,10.5 3.5,7" stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" />
+              </svg>
               AI-Powered Examination Intelligence Platform
               <span className="w-1.5 h-1.5 rounded-full animate-gold-pulse" style={{ background: 'var(--gold-500)' }} />
             </div>
@@ -186,21 +190,24 @@ export default function LandingPage() {
               <div className="flex-1 mx-4">
                 <div className="h-5 rounded-md px-3 text-xs flex items-center gap-2 max-w-xs mx-auto"
                   style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', color: 'var(--text-subtle)', fontFamily: 'monospace' }}>
-                  <span style={{ color: 'var(--gold-600)' }}>🔒</span> examgen.nexus/student
+                  <Lock size={10} style={{ color: 'var(--gold-600)' }} /> examgen.nexus/student
                 </div>
               </div>
             </div>
             {/* Dashboard preview */}
             <div className="p-6 grid grid-cols-4 gap-4" style={{ background: '#fafaf8' }}>
               {[
-                { label: 'Available Exams', val: '3', icon: '📚', color: '#c99a0e' },
-                { label: 'Avg Score',       val: '84%', icon: '🏆', color: '#16a34a' },
-                { label: 'Completed',        val: '7',   icon: '✅', color: '#0369a1' },
-                { label: 'Identity',         val: 'Verified', icon: '🛡️', color: '#9333ea' },
+                { label: 'Available Exams', val: '3',        Icon: Zap,       iconColor: '#c99a0e', iconBg: 'rgba(201,154,14,0.1)'  },
+                { label: 'Avg Score',       val: '84%',      Icon: BarChart3, iconColor: '#16a34a', iconBg: 'rgba(22,163,74,0.1)'   },
+                { label: 'Completed',       val: '7',        Icon: CheckCircle,iconColor: '#0369a1', iconBg: 'rgba(3,105,161,0.1)'  },
+                { label: 'Identity',        val: 'Verified', Icon: Shield,    iconColor: '#9333ea', iconBg: 'rgba(147,51,234,0.1)'  },
               ].map((item, i) => (
                 <div key={i} className="nexus-card p-4 text-center animate-fade-in-up" style={{ animationDelay: `${0.6 + i * 0.1}s` }}>
-                  <div className="text-2xl mb-1">{item.icon}</div>
-                  <div className="font-bold text-lg" style={{ color: item.color }}>{item.val}</div>
+                  <div className="w-9 h-9 rounded-xl mx-auto mb-2 flex items-center justify-center"
+                    style={{ background: item.iconBg, border: `1px solid ${item.iconColor}22` }}>
+                    <item.Icon size={16} style={{ color: item.iconColor }} />
+                  </div>
+                  <div className="font-bold text-base" style={{ color: item.iconColor }}>{item.val}</div>
                   <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{item.label}</div>
                 </div>
               ))}

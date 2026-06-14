@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle, XCircle, Trophy, Brain, BarChart3, TrendingUp, ArrowLeft, Loader2, Shield, Sparkles, ArrowRight } from 'lucide-react';
+import { CheckCircle, XCircle, Trophy, Brain, BarChart3, TrendingUp, ArrowLeft, Loader2, Shield, ArrowRight } from 'lucide-react';
 import api from '../../services/api';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -79,7 +79,7 @@ export default function ResultPage() {
           </motion.div>
 
           <h1 className="font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 5vw, 2.8rem)', color: 'var(--text-primary)' }}>
-            {passed ? '🎉 Exam Passed!' : 'Exam Complete'}
+            {passed ? 'Exam Passed' : 'Exam Complete'}
           </h1>
           <p style={{ color: 'var(--text-muted)' }}>
             {passed ? 'Excellent work! Here\'s your full performance analysis.' : 'Here\'s your complete performance analysis and recommendations.'}
@@ -140,7 +140,6 @@ export default function ResultPage() {
                 {placement.overallScore}
               </div>
               <span className="badge text-sm px-4 py-1.5 badge-gold">
-                <Sparkles size={11} className="inline mr-1" />
                 {placement.badge}
               </span>
             </motion.div>
@@ -263,7 +262,12 @@ export default function ResultPage() {
         {placement?.careerSuggestions?.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             className="nexus-card p-6 mb-8">
-            <h2 className="font-bold mb-4" style={{ color: 'var(--text-primary)' }}>🚀 Career Path Suggestions</h2>
+            <h2 className="font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a1814, #3d3830)' }}>
+                <TrendingUp size={13} style={{ color: '#f5c842' }} />
+              </div>
+              Career Path Suggestions
+            </h2>
             <div className="flex flex-wrap gap-2">
               {placement.careerSuggestions.map((c: string, i: number) => (
                 <span key={i} className="badge badge-gold text-sm px-4 py-2">{c}</span>

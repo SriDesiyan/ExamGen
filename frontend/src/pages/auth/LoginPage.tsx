@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Brain, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, Sparkles } from 'lucide-react';
+import { Brain, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, ArrowRight, GraduationCap, BookOpen } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
@@ -108,19 +108,23 @@ export default function LoginPage() {
             <div className="section-label mb-3">Quick access — demo accounts</div>
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => fillDemo('teacher')}
-                className="flex items-center gap-2 p-3 rounded-xl text-left transition-all text-sm font-medium"
+                className="flex items-center gap-2.5 p-3 rounded-xl text-left transition-all text-sm font-medium group"
                 style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-light)', color: 'var(--text-secondary)' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(201,154,14,0.4)'; e.currentTarget.style.background = 'var(--gold-50)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.background = 'var(--bg-secondary)'; }}>
-                <span className="text-lg">👩‍🏫</span>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-500/10 border border-amber-500/20 text-amber-700 transition-colors group-hover:bg-amber-500/20 group-hover:text-amber-800">
+                  <BookOpen size={15} />
+                </div>
                 <span>Teacher Demo</span>
               </button>
               <button onClick={() => fillDemo('student')}
-                className="flex items-center gap-2 p-3 rounded-xl text-left transition-all text-sm font-medium"
+                className="flex items-center gap-2.5 p-3 rounded-xl text-left transition-all text-sm font-medium group"
                 style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-light)', color: 'var(--text-secondary)' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(201,154,14,0.4)'; e.currentTarget.style.background = 'var(--gold-50)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.background = 'var(--bg-secondary)'; }}>
-                <span className="text-lg">🎓</span>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-500/10 border border-amber-500/20 text-amber-700 transition-colors group-hover:bg-amber-500/20 group-hover:text-amber-800">
+                  <GraduationCap size={15} />
+                </div>
                 <span>Student Demo</span>
               </button>
             </div>
@@ -164,7 +168,7 @@ export default function LoginPage() {
               disabled={isLoading}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}>
-              {isLoading ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : <>Sign In <Sparkles size={15} /></>}
+              {isLoading ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : <>Sign In <ArrowRight size={15} /></>}
             </motion.button>
 
             <p className="text-center text-sm" style={{ color: 'var(--text-muted)' }}>

@@ -115,17 +115,22 @@ export default function IdentityVerificationPage() {
       <div className="max-w-2xl mx-auto">
         {/* Progress steps */}
         <div className="flex items-center gap-2 mb-8">
-          {(['face', 'typing', 'complete'] as const).map((s, i) => (
-            <React.Fragment key={s}>
-              <div className={`flex items-center gap-2 ${step === s ? 'text-purple-400' : (i < ['face','typing','complete'].indexOf(step)) ? 'text-green-400' : 'text-zinc-600'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all ${step === s ? 'border-purple-500 bg-purple-500/10' : (i < ['face','typing','complete'].indexOf(step)) ? 'border-green-500 bg-green-500/10' : 'border-zinc-700'}`}>
-                  {i < ['face','typing','complete'].indexOf(step) ? <CheckCircle size={16} /> : i + 1}
+          {(['face', 'typing', 'complete'] as const).map((s, i) => {
+            const stepIdx = ['face', 'typing', 'complete'].indexOf(step);
+            const isCompleted = i < stepIdx;
+            const isActive = step === s;
+            return (
+              <React.Fragment key={s}>
+                <div className={`flex items-center gap-2 ${isActive ? 'text-amber-700' : isCompleted ? 'text-green-700' : 'text-zinc-400'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all ${isActive ? 'border-amber-500 bg-amber-50' : isCompleted ? 'border-green-500 bg-green-50' : 'border-zinc-200'}`}>
+                    {isCompleted ? <CheckCircle size={14} className="text-green-600" /> : i + 1}
+                  </div>
+                  <span className="text-sm font-medium hidden sm:block">{['Face Scan', 'Typing Profile', 'Complete'][i]}</span>
                 </div>
-                <span className="text-sm font-medium hidden sm:block">{['Face Scan', 'Typing Profile', 'Complete'][i]}</span>
-              </div>
-              {i < 2 && <div className={`flex-1 h-0.5 rounded ${i < ['face','typing','complete'].indexOf(step) ? 'bg-green-500' : 'bg-zinc-700'}`} />}
-            </React.Fragment>
-          ))}
+                {i < 2 && <div className={`flex-1 h-0.5 rounded ${isCompleted ? 'bg-green-500' : 'bg-zinc-200'}`} />}
+              </React.Fragment>
+            );
+          })}
         </div>
 
         <AnimatePresence mode="wait">
@@ -133,14 +138,17 @@ export default function IdentityVerificationPage() {
             <motion.div key="face" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
               className="nexus-card p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center"><Camera size={24} className="text-purple-400" /></div>
-                <div><h2 className="font-bold text-lg">Face Verification</h2><p className="text-zinc-400 text-sm">We'll capture your photo for identity verification</p></div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700"><Camera size={22} /></div>
+                <div>
+                  <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Face Verification</h2>
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>We'll capture your photo for identity verification</p>
+                </div>
               </div>
 
               {!faceCapturing && !faceDone && (
                 <div className="text-center py-8">
-                  <div className="w-32 h-32 rounded-full border-2 border-dashed border-zinc-600 flex items-center justify-center mx-auto mb-6">
-                    <Camera size={40} className="text-zinc-500" />
+                  <div className="w-32 h-32 rounded-full border-2 border-dashed border-zinc-200 flex items-center justify-center mx-auto mb-6">
+                    <Camera size={40} style={{ color: 'var(--text-subtle)' }} />
                   </div>
                   <button onClick={startCamera} className="btn-primary px-8 py-3">Enable Camera</button>
                 </div>
@@ -151,7 +159,7 @@ export default function IdentityVerificationPage() {
                   <div className="relative rounded-xl overflow-hidden bg-black aspect-video">
                     <video ref={videoRef} autoPlay muted className="w-full h-full object-cover" />
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-48 h-48 rounded-full border-2 border-purple-500/50 animate-pulse-glow" />
+                      <div className="w-48 h-48 rounded-full border-2 border-amber-500/50 animate-pulse" />
                     </div>
                   </div>
                   <button onClick={captureFace} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
@@ -162,9 +170,9 @@ export default function IdentityVerificationPage() {
 
               {faceDone && (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20">
-                    <CheckCircle size={20} className="text-green-400" />
-                    <div><div className="font-semibold text-green-300 text-sm">Face captured successfully</div><div className="text-green-400/70 text-xs">Your biometric profile is ready</div></div>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200">
+                    <CheckCircle size={20} className="text-green-600" />
+                    <div><div className="font-semibold text-green-800 text-sm">Face captured successfully</div><div className="text-green-700/80 text-xs">Your biometric profile is ready</div></div>
                   </div>
                   <button onClick={() => setStep('typing')} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
                     Continue to Typing Profile <ChevronRight size={18} />
@@ -178,15 +186,15 @@ export default function IdentityVerificationPage() {
             <motion.div key="typing" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
               className="nexus-card p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center"><Keyboard size={24} className="text-cyan-400" /></div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700"><Keyboard size={22} /></div>
                 <div>
-                  <h2 className="font-bold text-lg">Typing Biometrics</h2>
-                  <p className="text-zinc-400 text-sm">Sample {currentPhrase + 1} of 3 — Type the phrase below</p>
+                  <h2 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Typing Biometrics</h2>
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Sample {currentPhrase + 1} of 3 — Type the phrase below</p>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white/3 border border-white/10 mb-4">
-                <p className="text-zinc-300 text-sm italic leading-relaxed">"{BIOMETRIC_PHRASES[currentPhrase]}"</p>
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 mb-4">
+                <p className="text-sm italic leading-relaxed" style={{ color: 'var(--text-secondary)' }}>"{BIOMETRIC_PHRASES[currentPhrase]}"</p>
               </div>
 
               <textarea
@@ -199,7 +207,7 @@ export default function IdentityVerificationPage() {
               />
 
               <div className="flex items-center justify-between">
-                <div className="text-xs text-zinc-500">{typingSamples[currentPhrase].length} chars typed</div>
+                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{typingSamples[currentPhrase].length} chars typed</div>
                 <button onClick={nextPhrase} className="btn-primary px-6 py-2 flex items-center gap-2" disabled={saving}>
                   {saving ? <Loader2 size={16} className="animate-spin" /> : currentPhrase < 2 ? 'Next Sample' : 'Complete Verification'}
                   {!saving && <ChevronRight size={16} />}
@@ -211,11 +219,11 @@ export default function IdentityVerificationPage() {
           {step === 'complete' && (
             <motion.div key="complete" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
               className="nexus-card p-12 text-center">
-              <div className="w-20 h-20 rounded-full bg-green-500/15 flex items-center justify-center mx-auto mb-6 glow-green">
-                <CheckCircle size={40} className="text-green-400" />
+              <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6 border border-green-200">
+                <CheckCircle size={40} className="text-green-600" />
               </div>
-              <h2 className="text-2xl font-bold mb-2">Identity Verified!</h2>
-              <p className="text-zinc-400 mb-8">Your face scan and typing biometrics are enrolled. You can now take exams.</p>
+              <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Identity Verified!</h2>
+              <p className="mb-8" style={{ color: 'var(--text-muted)' }}>Your face scan and typing biometrics are enrolled. You can now take exams.</p>
               <button onClick={() => navigate('/student')} className="btn-primary px-8 py-3">
                 Go to Dashboard
               </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Brain, Plus, Trash2, Loader2, Sparkles, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Brain, Plus, Trash2, Loader2, Zap, AlertTriangle, CheckCircle } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
@@ -73,11 +73,11 @@ export default function CreateExamPage() {
         {step === 'details' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="nexus-card p-8 space-y-5">
             <div>
-              <label className="text-sm font-medium text-zinc-300 mb-2 block">Exam Title *</label>
+              <label className="text-sm font-medium text-zinc-700 mb-2 block">Exam Title *</label>
               <input type="text" className="nexus-input" placeholder="e.g. Data Structures Midterm" value={details.title} onChange={e => setDetails(d => ({ ...d, title: e.target.value }))} />
             </div>
             <div>
-              <label className="text-sm font-medium text-zinc-300 mb-2 block">Description</label>
+              <label className="text-sm font-medium text-zinc-700 mb-2 block">Description</label>
               <textarea className="nexus-input h-24 resize-none" placeholder="What this exam covers..." value={details.description} onChange={e => setDetails(d => ({ ...d, description: e.target.value }))} />
             </div>
             <div className="grid grid-cols-3 gap-4">
@@ -87,21 +87,21 @@ export default function CreateExamPage() {
                 { label: 'Passing Score (%)', key: 'passingScore', type: 'number' },
               ].map(f => (
                 <div key={f.key}>
-                  <label className="text-sm font-medium text-zinc-300 mb-2 block">{f.label}</label>
+                  <label className="text-sm font-medium text-zinc-700 mb-2 block">{f.label}</label>
                   <input type={f.type} className="nexus-input" value={(details as any)[f.key]} onChange={e => setDetails(d => ({ ...d, [f.key]: Number(e.target.value) }))} />
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-zinc-300 mb-2 block">Difficulty</label>
+                <label className="text-sm font-medium text-zinc-700 mb-2 block">Difficulty</label>
                 <select className="nexus-input" value={details.difficulty} onChange={e => setDetails(d => ({ ...d, difficulty: e.target.value }))}>
                   <option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option>
                 </select>
               </div>
               <div className="flex items-center gap-3 pt-7">
-                <input type="checkbox" id="shuffle" checked={details.shuffleQuestions} onChange={e => setDetails(d => ({ ...d, shuffleQuestions: e.target.checked }))} className="w-4 h-4 accent-purple-600" />
-                <label htmlFor="shuffle" className="text-sm text-zinc-300">Shuffle question order</label>
+                <input type="checkbox" id="shuffle" checked={details.shuffleQuestions} onChange={e => setDetails(d => ({ ...d, shuffleQuestions: e.target.checked }))} className="w-4 h-4 accent-amber-600" />
+                <label htmlFor="shuffle" className="text-sm text-zinc-600">Shuffle question order</label>
               </div>
             </div>
             <button onClick={createExam} disabled={creating} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
@@ -114,10 +114,15 @@ export default function CreateExamPage() {
         {step === 'questions' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
             {/* AI Panel */}
-            <div className="nexus-card p-6 border border-purple-500/20">
+            <div className="nexus-card p-6 border border-amber-500/20 bg-gold-subtle">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center"><Sparkles size={20} className="text-purple-400" /></div>
-                <div><h2 className="font-bold">AI Question Generator</h2><p className="text-zinc-400 text-xs">Generate questions from any topic instantly</p></div>
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 animate-spin-slow">
+                    <circle cx="12" cy="12" r="8" strokeDasharray="4 4" />
+                    <circle cx="12" cy="12" r="4" />
+                  </svg>
+                </div>
+                <div><h2 className="font-bold">AI Question Generator</h2><p className="text-zinc-500 text-xs">Generate questions from any topic instantly</p></div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <input type="text" className="nexus-input col-span-2" placeholder="Topic (e.g. Data Structures, DBMS)" value={aiForm.topic} onChange={e => setAiForm(f => ({ ...f, topic: e.target.value }))} />
@@ -131,7 +136,7 @@ export default function CreateExamPage() {
                   <option value="MCQ">Multiple Choice</option><option value="SHORT">Short Answer</option><option value="LONG">Long Answer</option>
                 </select>
                 <button onClick={generateWithAI} disabled={generating} className="btn-primary flex items-center justify-center gap-2">
-                  {generating ? <Loader2 size={16} className="animate-spin" /> : <><Sparkles size={16} /> Generate</>}
+                  {generating ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={16} className="text-amber-400" /> Generate</>}
                 </button>
               </div>
             </div>
@@ -185,13 +190,13 @@ export default function CreateExamPage() {
                 {questions.map((q, i) => (
                   <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
                     className="nexus-card p-4 flex items-start gap-3">
-                    <span className="text-purple-400 font-bold text-sm w-6 flex-shrink-0">{i + 1}.</span>
+                    <span className="text-amber-500 font-bold text-sm w-6 flex-shrink-0">{i + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{q.text}</p>
                       <div className="flex gap-2 mt-1">
-                        <span className="badge bg-white/5 text-zinc-400 text-xs">{q.type}</span>
+                        <span className="badge badge-light text-xs">{q.type}</span>
                         <span className={`badge text-xs ${q.difficulty === 'EASY' ? 'risk-low' : q.difficulty === 'HARD' ? 'risk-high' : 'risk-medium'}`}>{q.difficulty}</span>
-                        {q.topicTag && <span className="badge bg-purple-500/10 text-purple-400 text-xs">{q.topicTag}</span>}
+                        {q.topicTag && <span className="badge badge-gold text-xs">{q.topicTag}</span>}
                         <span className="text-xs text-zinc-600">{q.marks}m</span>
                       </div>
                       {q.leakageWarning?.hasDuplicates && (

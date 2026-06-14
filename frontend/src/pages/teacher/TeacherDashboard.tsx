@@ -35,7 +35,7 @@ export default function TeacherDashboard() {
   ];
 
   return (
-    <DashboardLayout title={`Welcome, ${user?.name?.split(' ')[0]}! 🎓`} subtitle="Manage your exams and monitor student performance in real time">
+    <DashboardLayout title={`Welcome, ${user?.name?.split(' ')[0]}!`} subtitle="Manage your exams and monitor student performance in real time">
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

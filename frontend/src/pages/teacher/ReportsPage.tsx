@@ -27,14 +27,14 @@ export default function ReportsPage() {
     toast.success('CSV exported!');
   };
 
-  if (loading) return <DashboardLayout title="Reports" subtitle="Loading..."><div className="flex justify-center py-20"><Loader2 size={40} className="animate-spin text-purple-400" /></div></DashboardLayout>;
+  if (loading) return <DashboardLayout title="Reports" subtitle="Loading..."><div className="flex justify-center py-20"><Loader2 size={40} className="animate-spin text-amber-500" /></div></DashboardLayout>;
 
   const summaryCards = [
-    { label: 'Submissions', value: analytics?.submissions || 0, icon: Users, color: 'text-purple-400' },
-    { label: 'Avg Score', value: `${analytics?.avgScore || 0}%`, icon: TrendingUp, color: 'text-green-400' },
-    { label: 'Pass Rate', value: `${analytics?.passRate || 0}%`, icon: BarChart3, color: 'text-cyan-400' },
-    { label: 'Flagged', value: analytics?.flaggedCount || 0, icon: AlertTriangle, color: 'text-red-400' },
-    { label: 'Avg Risk', value: analytics?.avgRisk || 0, icon: AlertTriangle, color: 'text-yellow-400' },
+    { label: 'Submissions', value: analytics?.submissions || 0, icon: Users, color: 'text-amber-600' },
+    { label: 'Avg Score', value: `${analytics?.avgScore || 0}%`, icon: TrendingUp, color: 'text-green-600' },
+    { label: 'Pass Rate', value: `${analytics?.passRate || 0}%`, icon: BarChart3, color: 'text-cyan-600' },
+    { label: 'Flagged', value: analytics?.flaggedCount || 0, icon: AlertTriangle, color: 'text-red-600' },
+    { label: 'Avg Risk', value: analytics?.avgRisk || 0, icon: AlertTriangle, color: 'text-amber-600' },
   ];
 
   return (
@@ -62,9 +62,9 @@ export default function ReportsPage() {
           <h2 className="font-bold mb-4">Score Distribution</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={analytics.distribution}>
-              <XAxis dataKey="range" tick={{ fill: '#a1a1aa', fontSize: 11 }} />
-              <YAxis tick={{ fill: '#a1a1aa', fontSize: 11 }} />
-              <Tooltip contentStyle={{ background: '#18181b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fafafa' }} />
+              <XAxis dataKey="range" tick={{ fill: 'var(--text-subtle)', fontSize: 11 }} />
+              <YAxis tick={{ fill: 'var(--text-subtle)', fontSize: 11 }} />
+              <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-medium)', borderRadius: '10px', color: 'var(--text-primary)', boxShadow: 'var(--shadow-md)', fontSize: '12px' }} />
               <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                 {analytics.distribution.map((_: any, i: number) => <Cell key={i} fill={['#ef4444', '#f97316', '#f59e0b', '#10b981', '#7c3aed'][i]} />)}
               </Bar>
@@ -76,13 +76,13 @@ export default function ReportsPage() {
       {/* Student table */}
       {analytics?.students?.length > 0 && (
         <div className="nexus-card overflow-hidden">
-          <div className="p-5 border-b border-white/5">
+          <div className="p-5 border-b" style={{ borderColor: 'var(--border-light)' }}>
             <h2 className="font-bold">Student Results</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/5 text-zinc-400">
+                <tr className="border-b text-zinc-500" style={{ borderColor: 'var(--border-light)' }}>
                   <th className="text-left p-4 font-medium">Student</th>
                   <th className="text-center p-4 font-medium">Score</th>
                   <th className="text-center p-4 font-medium">Risk</th>
@@ -91,16 +91,16 @@ export default function ReportsPage() {
               </thead>
               <tbody>
                 {analytics.students.map((s: any, i: number) => (
-                  <tr key={i} className="border-b border-white/3 hover:bg-white/2 transition-colors">
-                    <td className="p-4 font-medium">{s.name}</td>
+                  <tr key={i} className="border-b hover:bg-zinc-50 transition-colors" style={{ borderColor: 'var(--border-light)' }}>
+                    <td className="p-4 font-medium" style={{ color: 'var(--text-primary)' }}>{s.name}</td>
                     <td className="p-4 text-center">
-                      <span className={`font-bold ${Number(s.score) >= 40 ? 'text-green-400' : 'text-red-400'}`}>{s.score}%</span>
+                      <span className={`font-bold ${Number(s.score) >= 40 ? 'text-green-600' : 'text-red-600'}`}>{s.score}%</span>
                     </td>
                     <td className="p-4 text-center">
                       <span className={`badge text-xs ${s.riskScore < 30 ? 'risk-low' : s.riskScore < 60 ? 'risk-medium' : 'risk-high'}`}>{s.riskScore}</span>
                     </td>
                     <td className="p-4 text-center">
-                      <span className={`badge text-xs ${s.status === 'FLAGGED' ? 'risk-critical' : s.status === 'SUBMITTED' ? 'risk-low' : 'bg-zinc-800 text-zinc-400'}`}>{s.status}</span>
+                      <span className={`badge text-xs ${s.status === 'FLAGGED' ? 'risk-critical' : s.status === 'SUBMITTED' ? 'risk-low' : 'badge-light'}`}>{s.status}</span>
                     </td>
                   </tr>
                 ))}

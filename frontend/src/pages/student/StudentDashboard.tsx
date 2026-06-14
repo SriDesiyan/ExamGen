@@ -37,7 +37,7 @@ export default function StudentDashboard() {
   ];
 
   return (
-    <DashboardLayout title={`Welcome back, ${user?.name?.split(' ')[0]}! 👋`} subtitle="Your personal exam dashboard and performance overview">
+    <DashboardLayout title={`Welcome back, ${user?.name?.split(' ')[0]}`} subtitle="Your personal exam dashboard and performance overview">
 
       {/* Identity verification banner */}
       {!user?.isVerified && (
