@@ -2,6 +2,9 @@
   "name": "examgen-nexus",
   "version": "1.0.0",
   "description": "ExamGen Nexus — AI-powered Examination Intelligence Platform",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "setup": "cd backend && npm install && npm run setup && cd ../frontend && npm install",
     "dev:backend": "cd backend && npm run dev",
