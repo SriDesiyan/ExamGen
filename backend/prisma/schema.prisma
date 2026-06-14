@@ -1,0 +1,140 @@
+// This is your Prisma schema file for ExamGen Nexus
+// Compatible with Prisma 5.x
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./examgen.db"
+}
+
+model User {
+  id                String       @id @default(uuid())
+  name              String
+  email             String       @unique
+  passwordHash      String
+  role              String       @default("STUDENT")
+  keystrokeProfile  String?
+  faceProfileBase64 String?
+  isVerified        Boolean      @default(false)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  examsCreated  Exam[]        @relation("TeacherExams")
+  submissions   Submission[]
+  enrolledIn    Enrollment[]
+
+  @@map("users")
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+  teacherId   String
+  createdAt   DateTime @default(now())
+  exams       Exam[]
+
+  @@map("courses")
+}
+
+model Exam {
+  id                String     @id @default(uuid())
+  title             String
+  description       String?
+  courseId          String?
+  teacherId         String
+  durationMinutes   Int        @default(60)
+  totalMarks        Int        @default(100)
+  passingScore      Int        @default(40)
+  difficulty        String     @default("MEDIUM")
+  isPublished       Boolean    @default(false)
+  shuffleQuestions  Boolean    @default(true)
+  scheduledAt       DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  teacher     User         @relation("TeacherExams", fields: [teacherId], references: [id])
+  course      Course?      @relation(fields: [courseId], references: [id])
+  questions   Question[]
+  submissions Submission[]
+  enrollments Enrollment[]
+
+  @@map("exams")
+}
+
+model Question {
+  id            String       @id @default(uuid())
+  examId        String
+  text          String
+  type          String       @default("MCQ")
+  options       String?
+  correctAnswer String
+  explanation   String?
+  difficulty    String       @default("MEDIUM")
+  topicTag      String?
+  marks         Int          @default(1)
+  orderIndex    Int          @default(0)
+  createdAt     DateTime     @default(now())
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
+
+model Submission {
+  id                String   @id @default(uuid())
+  examId            String
+  studentId         String
+  startedAt         DateTime @default(now())
+  submittedAt       DateTime?
+  answers           String   @default("[]")
+  score             Float?
+  percentage        Float?
+  riskScore         Float    @default(0)
+  riskExplanation   String?
+  typingMatchScore  Float?
+  faceMismatchCount Int      @default(0)
+  tabSwitchCount    Int      @default(0)
+  cancelled         Boolean  @default(false)
+  status            String   @default("IN_PROGRESS")
+  skillGapData      String?
+  placementData     String?
+  createdAt         DateTime @default(now())
+
+  exam     Exam               @relation(fields: [examId], references: [id])
+  student  User               @relation(fields: [studentId], references: [id])
+  events   ProctoringEvent[]
+
+  @@map("submissions")
+}
+
+model ProctoringEvent {
+  id           String         @id @default(uuid())
+  submissionId String
+  type         String
+  severity     String         @default("LOW")
+  timestamp    DateTime       @default(now())
+  metadata     String?
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("proctoring_events")
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  studentId String
+  examId    String
+  createdAt DateTime @default(now())
+
+  student User @relation(fields: [studentId], references: [id])
+  exam    Exam @relation(fields: [examId], references: [id])
+
+  @@unique([studentId, examId])
+  @@map("enrollments")
+}

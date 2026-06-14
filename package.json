@@ -1,0 +1,12 @@
+{
+  "name": "examgen-nexus",
+  "version": "1.0.0",
+  "description": "ExamGen Nexus — AI-powered Examination Intelligence Platform",
+  "scripts": {
+    "setup": "cd backend && npm install && npm run setup && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run db:seed"
+  },
+  "workspaces": ["frontend", "backend"]
+}

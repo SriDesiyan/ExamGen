@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+E-pro/
+Online-Exam-Softw/
+Proct/
+.DS_Store
+*.log
